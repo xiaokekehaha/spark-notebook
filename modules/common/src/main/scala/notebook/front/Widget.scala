@@ -7,7 +7,7 @@ import notebook.util.ClassUtils
 import scala.xml.{Node, NodeSeq}
 import scalaz._
 
-trait Widget extends Iterable[Node] {
+trait Widget extends Iterable[Node] with Serializable {
   def toHtml: NodeSeq
 
   def iterator = toHtml.iterator

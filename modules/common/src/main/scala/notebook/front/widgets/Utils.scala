@@ -21,7 +21,7 @@ object Utils {
   }
 }
 
-trait Utils {
+trait Utils extends Serializable {
 
   def scopedScript(content: String, data: JsValue = null, selector:Option[String]=None) = {
     val tag = <script type="text/x-scoped-javascript">/*{xml.PCData("*/" + content + "/*")}*/</script>
@@ -36,7 +36,7 @@ trait Utils {
     withSelector
   }
 
-  implicit val jsStringAnyCodec:Codec[JsValue, Seq[(String, Any)]] = new Codec[JsValue, Seq[(String, Any)]] {
+  @transient implicit val jsStringAnyCodec:Codec[JsValue, Seq[(String, Any)]] = new Codec[JsValue, Seq[(String, Any)]] {
     def decode(a: Seq[(String, Any)]):JsValue = JsObject(a.map( f => f._1.trim -> toJson(f._2) ))
     def encode(v: JsValue):Seq[(String, Any)] = ??? //todo
   }

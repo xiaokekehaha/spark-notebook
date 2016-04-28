@@ -8,12 +8,12 @@ import notebook.JsonCodec._
 import notebook.front.widgets.magic
 import notebook.front.widgets.magic._
 
-trait Lists extends Generic with Utils {
+trait Lists extends Generic with Utils with Serializable {
   def ul(capacity:Int=10, initData:Seq[String]=Nil, prefill:Option[String]=None) = new HtmlList(capacity, initData, prefill)
   def ol(capacity:Int=10, initData:Seq[String]=Nil, prefill:Option[String]=None) = new HtmlList(capacity, initData, prefill, false)
 
-  class HtmlList(capacity:Int=10, initData:Seq[String]=Nil, prefill:Option[String]=None, unordered:Boolean=true) extends DataConnectedWidget[String] {
-    implicit val singleCodec:Codec[JsValue, String] = JsonCodec.strings
+  class HtmlList(capacity:Int=10, initData:Seq[String]=Nil, prefill:Option[String]=None, unordered:Boolean=true) extends DataConnectedWidget[String] with Serializable {
+    @transient implicit val singleCodec:Codec[JsValue, String] = JsonCodec.strings
 
     var data = (initData.size, prefill) match {
       case (0, None) => Seq.empty[String]

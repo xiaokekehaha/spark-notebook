@@ -8,7 +8,7 @@ import notebook.JsonCodec._
 import notebook.front.widgets.magic
 import magic._
 
-trait Generic {
+trait Generic extends Serializable {
   def html(html: NodeSeq): Widget = new SimpleWidget(html)
 
   def reactiveHtml(initialValue: String) = new SingleConnectedWidget[String] {
