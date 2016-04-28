@@ -17,7 +17,7 @@ trait Widget extends Iterable[Node] with Serializable {
   override def toString() = "<" + ClassUtils.getSimpleName(getClass) + " widget>"
 }
 
-class SimpleWidget(html: NodeSeq) extends Widget {
+class SimpleWidget(html: NodeSeq) extends Widget with Serializable {
   def toHtml = html
 
   override def toString() = "<widget>"

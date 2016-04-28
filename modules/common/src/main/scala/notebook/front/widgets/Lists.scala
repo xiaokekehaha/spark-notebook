@@ -4,7 +4,7 @@ import scala.xml.{NodeSeq, UnprefixedAttribute, Null}
 import play.api.libs.json._
 import notebook._
 import notebook.front._
-import notebook.JsonCodec._
+import notebook.{JsonCodec, Codec}
 import notebook.front.widgets.magic
 import notebook.front.widgets.magic._
 
@@ -15,7 +15,7 @@ trait Lists extends Generic with Utils with Serializable {
   class HtmlList(capacity:Int=10, initData:Seq[String]=Nil, prefill:Option[String]=None, unordered:Boolean=true) extends DataConnectedWidget[String] with Serializable {
     @transient implicit val singleCodec:Codec[JsValue, String] = JsonCodec.strings
 
-    var data = (initData.size, prefill) match {
+    @transient var data = (initData.size, prefill) match {
       case (0, None) => Seq.empty[String]
       case (x, None) => initData
       case (0, Some(i)) => Seq.fill(capacity)(i)
@@ -24,7 +24,7 @@ trait Lists extends Generic with Utils with Serializable {
 
     apply(data)
 
-    lazy val reactivity = scopedScript(
+    @transient lazy val reactivity = scopedScript(
                             """
                                 |req(
                                 |['observable', 'knockout'],
@@ -40,7 +40,7 @@ trait Lists extends Generic with Utils with Serializable {
                           )
 
 
-    lazy val toHtml = unordered match {
+    @transient lazy val toHtml = unordered match {
       case true => <ul data-bind="foreach: value"><li data-bind="html: $data"></li>{reactivity}</ul>
       case false => <ol data-bind="foreach: value"><li data-bind="html: $data"></li>{reactivity}</ol>
     }

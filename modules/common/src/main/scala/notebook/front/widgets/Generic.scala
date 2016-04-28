@@ -9,10 +9,10 @@ import notebook.front.widgets.magic
 import magic._
 
 trait Generic extends Serializable {
-  def html(html: NodeSeq): Widget = new SimpleWidget(html)
+  @transient def html(html: NodeSeq): Widget = new SimpleWidget(html)
 
   def reactiveHtml(initialValue: String) = new SingleConnectedWidget[String] {
-    implicit val codec:Codec[JsValue, String] = formatToCodec(None)(Format.of[String])
+    @transient implicit val codec:Codec[JsValue, String] = formatToCodec(None)(Format.of[String])
 
     lazy val toHtml = <div data-bind="html: value">{
       scopedScript(
